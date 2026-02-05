@@ -31,6 +31,7 @@ demo/      interview walkthrough script
 ## Technical design docs
 
 - `docs/tech-stack-and-implementation.md`
+- `docs/deployment-rollout-and-multilingual.md`
 - `docs/architecture.md`
 - `docs/threat-model.md`
 - `docs/compliance-notes.md`
