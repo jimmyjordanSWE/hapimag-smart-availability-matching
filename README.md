@@ -28,6 +28,13 @@ tests/     unit and safety tests
 demo/      interview walkthrough script
 ```
 
+## Technical design docs
+
+- `docs/tech-stack-and-implementation.md`
+- `docs/architecture.md`
+- `docs/threat-model.md`
+- `docs/compliance-notes.md`
+
 ## Quick start (placeholder)
 
 Implementation is scaffolded first. Runtime commands will be added as modules are built.
