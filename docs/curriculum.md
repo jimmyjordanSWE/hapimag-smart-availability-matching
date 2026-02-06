@@ -2,12 +2,12 @@
 
 ## What We Build
 
-1. Secure staff operations assistant for SOP and booking-policy Q&A
-2. RAG answers with citations and confidence signal
-3. Role-based access per staff persona
-4. Guardrails for prompt injection and data exfiltration
+1. Sold-out recovery API for booking frontend integration
+2. Rule-based candidate filtering and weighted alternative ranking
+3. Transparent "why this match" reasoning output
+4. Waitlist likelihood scoring and feedback capture
 5. PII-safe observability and redacted logs
-6. Evaluation pack: grounding, latency, refusal safety
+6. Evaluation pack: recovery rate, ranking quality, latency
 
 ## What You Learn
 
@@ -21,10 +21,10 @@
 
 ### Secure LLM engineering
 
-- Threat modeling for RAG systems
-- Retrieval ACL design and least-privilege access
-- Prompt-injection defenses and policy gates
-- Output filtering and sensitive-data controls
+- Threat modeling for ranking/recommendation services
+- Input hardening and abuse controls
+- Optional LLM explanation hardening
+- Output validation and sensitive-data controls
 - Safety and quality evaluation strategy
 
 ### Production delivery skills

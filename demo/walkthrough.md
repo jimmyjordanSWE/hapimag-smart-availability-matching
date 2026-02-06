@@ -2,13 +2,12 @@
 
 ## Story
 
-"A new resort staff member needs quick, correct answers without exposing sensitive information."
+"A member hits sold out on a preferred stay; the system recovers the booking with high-fit alternatives."
 
 ## Sequence
 
-1. Ask a standard booking-policy question and show a cited answer.
-2. Ask a manager-only question from a front-desk role and show access denial.
-3. Send a prompt-injection attempt and show guardrail blocking behavior.
-4. Show eval summary for quality and safety.
-5. Close with how this maps to Hapimag operations.
-
+1. Send a sold-out request to `POST /match`.
+2. Show top 3 alternatives and "why this match" reasons.
+3. Show waitlist likelihood score for original request.
+4. Submit accept/reject signal to `POST /feedback`.
+5. Show eval summary (recovery rate, rank quality, latency).

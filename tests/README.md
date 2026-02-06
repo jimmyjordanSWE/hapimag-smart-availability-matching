@@ -2,8 +2,7 @@
 
 Target test layers:
 
-- unit tests for retrieval and guardrails
-- authorization tests per role
-- adversarial prompt safety tests
-- regression tests for citation grounding
-
+- unit tests for hard filters and ranking weights
+- endpoint tests for `/match`, `/feedback`, `/health`
+- authorization and request validation tests
+- regression tests for ranking output stability

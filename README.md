@@ -6,25 +6,25 @@ Production-minded AI demo for sold-out booking recovery in hospitality.
 
 This project demonstrates a practical system for:
 
-- onboarding staff faster,
-- answering SOP and booking policy questions with citations,
-- reducing service errors with secure guardrails.
+- recovering failed booking intent,
+- recommending high-fit alternatives with transparent reasons,
+- improving inventory usage with controlled rollout and guardrails.
 
 ## MVP features
 
-- RAG Q&A over synthetic resort docs
-- Role-based access control for staff personas
-- Prompt-injection and data leakage defenses
-- PII-safe logging and redaction
-- Evaluation report for quality + safety
+- `POST /match` endpoint for sold-out recovery
+- Top-3 ranked alternatives with explanation strings
+- Waitlist likelihood score (0-100)
+- `POST /feedback` loop for model/ranker tuning
+- Evaluation report for recovery and ranking quality
 
 ## Repo map
 
 ```text
 docs/      architecture, threat model, compliance notes, runbook
-app/       API and core modules
-data/      synthetic policy and SOP content
-tests/     unit and safety tests
+app/       API and ranking modules
+data/      synthetic inventory and policy context
+tests/     unit, scoring, and safety tests
 demo/      interview walkthrough script
 ```
 
@@ -37,6 +37,7 @@ demo/      interview walkthrough script
 - `docs/threat-model.md`
 - `docs/compliance-notes.md`
 
-## Quick start (placeholder)
+## Quick start
 
-Implementation is scaffolded first. Runtime commands will be added as modules are built.
+Build and run instructions are defined in:
+- `docs/smart-availability-step-by-step.md`

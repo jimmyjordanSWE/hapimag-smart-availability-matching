@@ -16,7 +16,7 @@ Roll out safely in Swiss pilot sites first, then expand across Europe with langu
 
 - Start with a small number of Swiss resorts.
 - Initial languages: German, French, Italian, English.
-- Limit scope to staff-assist Q&A (read-only guidance).
+- Limit scope to sold-out recovery recommendations.
 - Track metrics daily and capture policy gaps.
 
 ### Phase 2 - Swiss expansion
@@ -49,10 +49,10 @@ Roll out safely in Swiss pilot sites first, then expand across Europe with langu
 
 ## Pilot success criteria (example)
 
-- Grounded answer rate >= 90%
-- Policy citation coverage >= 95%
+- Sold-out recovery rate >= 20% (baseline dependent)
+- Alternative accept rate >= 12% (baseline dependent)
 - P95 latency <= 2.5s
-- Prompt-injection block rate >= 99% on test suite
+- Explanation validity checks >= 99% pass on test suite
 - No critical privacy leakage incidents
 
 ## Risk controls during expansion
@@ -61,4 +61,3 @@ Roll out safely in Swiss pilot sites first, then expand across Europe with langu
 - Canary rollout for each new language
 - Kill switch for unsafe behavior
 - Human escalation path for uncertain answers
-

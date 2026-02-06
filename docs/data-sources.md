@@ -1,71 +1,46 @@
 # Data Sources Strategy
 
-## Short answer
+## Goal
 
-Yes, we can build a strong RAG demo without Hapimag internal data.
+Build Smart Availability Matching without using Hapimag internal data.
 
-The best approach is a **hybrid corpus**:
+## Primary dataset (required)
 
-1. Synthetic hospitality SOP/policy docs (primary RAG corpus)
-2. Open hospitality/travel QA datasets (evaluation and robustness)
-3. Public official references (compliance/security grounding)
+Use synthetic but realistic operational data:
 
-## Recommended dataset mix
+- `resorts` (location, attributes, room types)
+- `inventory_calendar` (availability by date and room type)
+- `pricing_or_points` (cost signals)
+- `waitlist_history` (release rates and delays)
+- `member_preferences` (synthetic profiles and flexibility)
 
-### 1) Core RAG corpus (recommended first)
+This is the source of truth for MVP.
 
-- Create synthetic but realistic resort docs:
-  - booking rules
-  - cancellation/refund policy
-  - check-in/out exception playbooks
-  - front desk escalation SOPs
-- Keep all examples fictional and non-identifying.
-- This is the safest and most interview-effective path.
+## External datasets (optional)
 
-### 2) Open hospitality/travel QA data (for eval and scenario coverage)
+Use open data only to stress-test scenarios and assumptions:
 
-- Bitext hospitality LLM dataset (25k rows, CDLA-Sharing 1.0)
-  - https://huggingface.co/datasets/bitext/Bitext-hospitality-llm-chatbot-training-dataset
-- Bitext travel LLM dataset (CDLA-Sharing 1.0)
-  - https://huggingface.co/datasets/bitext/Bitext-travel-llm-chatbot-training-dataset
-
-Use these mostly for:
-- test prompts,
-- intent coverage,
-- adversarial/safety scenario generation.
-
-### 3) Structured hotel demand data (optional analytics sidecar)
-
-- Hotel Booking Demand dataset (open access article + supplied data)
+- Hotel Booking Demand dataset (seasonality/cancellation patterns)
   - https://www.sciencedirect.com/science/article/pii/S2352340918315191
-- Useful for analytics demos (cancellations/seasonality), not SOP RAG text itself.
-
-### 4) Public Swiss tourism stats (context layer)
-
-- Swiss BFS PX-Web hotel arrivals/overnight stays table
+- Swiss tourism statistics (context and seasonality validation)
   - https://www.pxweb-r.bfs.admin.ch/pxweb/en/px-x-1003020000_102/-/px-x-1003020000_102.px/
 
-Use this for:
-- dashboard context,
-- interview narrative about demand trends.
+## Licensing and hygiene
 
-## Licensing and usage notes
+- Keep external sources documented with license and attribution.
+- Do not mix uncertain-license scraped data.
+- Do not store any real customer records in repository.
 
-- Track license per source in a simple `DATA_SOURCES.md` table.
-- Keep third-party text in a separate folder from synthetic docs.
-- For CDLA/ODbL-like share-alike sources, keep attribution in repo docs.
-- Do not mix unclear-license scraped content into the core demo corpus.
-
-## Proposed folder split
+## Folder split
 
 ```text
 data/
-  synthetic_resort_policies/      # primary RAG corpus
-  external_open_datasets/         # eval/scenario data only
-  references/                     # official PDFs/links + metadata
+  synthetic_resort_policies/      # current synthetic baseline assets
+  synthetic_inventory/            # add inventory, waitlist, preference CSVs
+  external_open_datasets/         # optional scenario stress data
 ```
 
 ## Decision
 
-For this project, we should treat synthetic resort policy docs as source-of-truth and use open datasets only to improve test coverage and realism.
+For interview credibility and safety, prioritize synthetic operational data plus reproducible generation scripts.
 

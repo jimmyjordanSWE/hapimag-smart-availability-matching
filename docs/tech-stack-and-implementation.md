@@ -1,102 +1,70 @@
 # Tech Stack and Implementation Details
 
-## TL;DR decisions
+## Scope
 
-- Do **not** train a model from scratch for this project.
-- Do **not** use Kaggle as a runtime platform.
-- Build a secure RAG system with strong controls and optional self-hosted inference.
+This service handles sold-out booking recovery for the booking frontend.
 
-## Why not train from scratch
+Primary endpoints:
+- `POST /match`
+- `POST /feedback`
+- `GET /health`
 
-- Training is expensive, slow, and weak signal for this role.
-- Hapimag value is in secure integration, retrieval quality, safety, and operations.
-- A strong retrieval + guardrails architecture is the senior signal.
+## Chosen stack (single path)
 
-## Recommended stack (pragmatic)
-
-### App/API
-
+### API
 - Python 3.11
 - FastAPI
 - Pydantic
-- Uvicorn
+- Uvicorn/Gunicorn
 
-### Retrieval
+### Data layer
+- PostgreSQL
+- SQLAlchemy + Alembic
+- Optional `pgvector` for similarity features (not required for MVP)
 
-- LangChain or LlamaIndex (thin orchestration only)
-- pgvector (PostgreSQL) for vector search
-- `bge-small-en-v1.5` or `multilingual-e5-base` embeddings
-
-### Multilingual handling (Europe-ready)
-
-- Primary choice: `multilingual-e5-base` embeddings for cross-language retrieval
-- Store language metadata per chunk (`de`, `fr`, `it`, `en`, `es`, etc.)
-- Detect query language at request time and prefer same-language chunks first
-- If not enough context, fall back to cross-lingual retrieval
-- Prompt templates by locale to keep tone and compliance wording consistent
-- Keep canonical policy docs in source language + approved translations
-
-### LLM inference (privacy-first options)
-
-Option A (best demo control):
-- Self-hosted model via Ollama or vLLM
-- Suggested model class: 7B-14B instruct model
-
-Option B (faster dev, still enterprise-acceptable if configured):
-- Azure OpenAI / enterprise API with:
-  - no training on customer data
-  - strict data retention policy
-  - regional controls
+### Ranking and reasoning
+- Deterministic rule engine for hard constraints
+- Weighted scoring engine for soft ranking
+- Templated explanation generator
+- Waitlist likelihood estimator (heuristic first)
 
 ### Security and controls
-
-- JWT auth + role-based authorization
-- Retrieval ACL by role/document class
-- Input/output guardrails
-- PII redaction in logs
-- Secret management via environment + vault pattern
+- JWT/API key auth (depending on integration context)
+- Request schema validation and strict input bounds
+- Redacted structured logs
+- Allow-list based outbound network policy in production
 
 ### Observability
-
-- Structured JSON logs
+- JSON logging
 - OpenTelemetry traces
-- Prometheus metrics
-- Basic eval report (groundedness, latency, refusal safety)
-- Per-language metrics: accuracy, latency, fallback rate, refusal rate
+- Metrics: latency, error rate, match success rate, fallback rate
 
 ### Deployment
+- Dockerized API
+- Managed Postgres (Render/Neon/Supabase)
+- Deploy API on Render or Fly.io
+- Platform ingress is sufficient for MVP; add Nginx only if hardening requires it
 
-- Docker + docker-compose for local demo
-- Kubernetes-ready manifests (optional stretch)
-- Horizontal scaling for API + inference workers
-- Queue-based background ingestion for large document updates
+## Performance targets (MVP)
 
-### Capacity and performance targets
+- `P95 /match latency <= 800ms` without LLM explanation
+- `P95 /match latency <= 2.5s` with optional LLM explanation
+- Error rate `< 1%` under pilot load
+- Health endpoint success rate `>= 99.9%`
 
-- Define targets as:
-  - `P95 latency` (for example: <= 2.5s for standard Q&A)
-  - `Throughput` (requests/minute sustained)
-  - `Concurrent sessions` (active users at peak)
-  - `Error rate` and `safe refusal rate`
-- Start with conservative targets in pilot, then scale by measured demand
+## Feature order
 
-## Suggested implementation plan (feature order)
+1. Data schema + synthetic seed data
+2. `POST /match` with hard filters
+3. Weighted ranking + top 3 output
+4. Waitlist score + explanation strings
+5. `POST /feedback` persistence
+6. Eval script + benchmark report
+7. Observability and rollout guardrails
 
-1. Ingest synthetic policy docs and build vector index.
-2. Add `/ask` endpoint with citations.
-3. Add role-based retrieval permissions.
-4. Add prompt-injection + sensitive-output filters.
-5. Add `/feedback` and eval harness.
-6. Add logging/tracing and redaction checks.
-7. Add multilingual retrieval and per-language eval slices.
+## Data policy
 
-## Data policy for this demo
+- Source-of-truth is synthetic inventory, cancellation, and preference data.
+- No real customer data in this repository.
+- External open datasets are used only for scenario stress testing.
 
-- Source-of-truth: synthetic policy/SOP documents only.
-- Open datasets: evaluation and scenario generation only.
-- No real guest data in repository.
-
-## Answer to "Can we use ChatGPT API?"
-
-Yes, but with enterprise controls and clear boundaries.  
-For strongest "company-secrets-safe" posture in interviews, self-hosted inference (Ollama/vLLM) is easier to defend.

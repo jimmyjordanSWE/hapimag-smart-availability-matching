@@ -2,9 +2,8 @@
 
 Implementation modules will be added here:
 
-- `api/` request handlers
-- `rag/` retrieval pipeline
-- `guardrails/` policy checks
-- `auth/` role and permission checks
-- `evals/` quality and safety evaluation
-
+- `api/` request handlers (`/match`, `/feedback`, `/health`)
+- `ranking/` hard-filter and weighted scoring logic
+- `waitlist/` likelihood scoring logic
+- `auth/` service authentication and policy checks
+- `evals/` ranking quality and latency evaluation
