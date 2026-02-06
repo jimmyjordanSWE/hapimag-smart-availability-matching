@@ -1,6 +1,6 @@
-# Hapimag Staff Operations Assistant Demo
+# Hapimag Smart Availability Matching
 
-Production-minded AI assistant demo for hospitality operations.
+Production-minded AI demo for sold-out booking recovery in hospitality.
 
 ## Why this exists
 
@@ -32,6 +32,7 @@ demo/      interview walkthrough script
 
 - `docs/tech-stack-and-implementation.md`
 - `docs/deployment-rollout-and-multilingual.md`
+- `docs/smart-availability-step-by-step.md`
 - `docs/architecture.md`
 - `docs/threat-model.md`
 - `docs/compliance-notes.md`
